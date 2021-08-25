@@ -1,10 +1,10 @@
-1. Найдите номер модели, скорость и размер жесткого диска для всех ПК стоимостью менее 500 дол. Вывести: model, speed и hd
+1. Найдите номер модели, скорость и размер жесткого диска для всех ПК стоимостью менее 500 дол. Вывести: model, speed и hd.
 
 SELECT model, speed, hd
 FROM PC
 WHERE price < 500;
 
-2. Найдите производителей принтеров. Вывести: maker
+2. Найдите производителей принтеров. Вывести: maker.
 
 SELECT DISTINCT maker
 FROM Product
@@ -32,8 +32,80 @@ WHERE cd IN ('12x', '24x') AND price < 600;
 
 SELECT DISTINCT maker, speed
 FROM Laptop
-INNER JOIN product
-ON laptop.model = product.model
-WHERE hd >= 10;
+INNER JOIN Product
+ON Laptop.model = Product.model
+WHERE hd >= 10.0;
 
-7. 
+7. Найдите номера моделей и цены всех имеющихся в продаже продуктов (любого типа) производителя B (латинская буква).
+
+SELECT Product.model, PC.price
+FROM PC
+INNER JOIN Product ON Product.model = PC.model
+WHERE maker = 'B'
+UNION
+SELECT Product.model, Laptop.price
+FROM Laptop
+INNER JOIN Product ON Product.model = Laptop.model
+WHERE maker = 'B'
+UNION
+SELECT Product.model, Printer.price
+FROM Printer
+INNER JOIN Product ON Product.model = Printer.model
+WHERE maker = 'B';
+
+8. Найдите производителя, выпускающего ПК, но не ПК-блокноты.
+
+SELECT DISTINCT maker
+FROM Product
+WHERE type = 'PC' AND maker NOT IN 
+(SELECT maker
+FROM Product
+WHERE type = 'Laptop');
+
+9. Найдите производителей ПК с процессором не менее 450 Мгц. Вывести: Maker.
+
+SELECT DISTINCT maker
+FROM Product
+INNER JOIN PC
+ON Product.model = PC.model
+WHERE speed >= 450;
+
+10. Найдите модели принтеров, имеющих самую высокую цену. Вывести: model, price.
+
+SELECT model, price  
+FROM Printer  
+WHERE price = (SELECT MAX(price) FROM Printer);
+
+11. Найдите среднюю скорость ПК.
+
+SELECT AVG(speed) AS avg_speed
+FROM PC;
+
+12. Найдите среднюю скорость ПК-блокнотов, цена которых превышает 1000 дол.
+
+SELECT AVG(speed) AS avg_speed
+FROM Laptop
+WHERE price > 1000;
+
+13. Найдите среднюю скорость ПК, выпущенных производителем A.
+
+SELECT AVG(speed) AS avg_speed
+FROM PC
+INNER JOIN Product
+ON pc.model = product.model
+WHERE maker = 'A';
+
+14. 
+
+15. Найдите размеры жестких дисков, совпадающих у двух и более PC. Вывести: HD.
+
+SELECT hd
+FROM PC
+GROUP BY hd
+HAVING COUNT(*) >= 2;
+
+
+
+
+
+
