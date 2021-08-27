@@ -104,6 +104,36 @@ FROM PC
 GROUP BY hd
 HAVING COUNT(*) >= 2;
 
+16.
+17.
+
+18. Найдите производителей самых дешевых цветных принтеров. Вывести: maker, price
+
+SELECT Product.maker, Printer.price
+FROM Product
+INNER JOIN Printer ON Product.model = Printer.model
+WHERE price = (SELECT MIN(price) FROM Printer WHERE color = 'y') AND color = 'y'
+GROUP BY maker, price;
+
+19. Для каждого производителя, имеющего модели в таблице Laptop, найдите средний размер экрана выпускаемых им ПК-блокнотов. Вывести: maker, средний размер экрана.
+
+SELECT Product.maker, AVG(Laptop.screen) AS AVG_Screen
+FROM Laptop
+INNER JOIN Product ON Laptop.model = Product.model
+GROUP BY maker;
+
+20.
+
+
+
+
+
+
+
+
+
+
+
 
 
 
