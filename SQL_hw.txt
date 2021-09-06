@@ -110,9 +110,15 @@ GROUP BY hd
 HAVING COUNT(*) >= 2;
 
 16.
-17.
 
-18. Найдите производителей самых дешевых цветных принтеров. Вывести: maker, price
+17. Найдите модели ПК-блокнотов, скорость которых меньше скорости каждого из ПК. Вывести: type, model, speed.
+
+SELECT DISTINCT Product.type, Laptop.model, Laptop.speed
+FROM Laptop
+INNER JOIN Product ON Laptop.model = Product.model
+WHERE Laptop.speed < ALL (SELECT speed FROM PC);
+
+18. Найдите производителей самых дешевых цветных принтеров. Вывести: maker, price.
 
 SELECT Product.maker, Printer.price
 FROM Product
@@ -127,7 +133,13 @@ FROM Laptop
 INNER JOIN Product ON Laptop.model = Product.model
 GROUP BY maker;
 
-20.
+20. Найдите производителей, выпускающих по меньшей мере три различных модели ПК. Вывести: Maker, число моделей ПК.
+
+SELECT maker, COUNT(model) AS COUNT_model
+FROM Product
+WHERE type = 'PC'
+GROUP BY maker
+HAVING COUNT(model) >= 3;
 
 21. Найдите максимальную цену ПК, выпускаемых каждым производителем, у которого есть модели в таблице PC. Вывести: maker, максимальная цена.
 
@@ -142,6 +154,19 @@ SELECT speed, AVG(price) AS AVG_price
 FROM PC
 WHERE speed > 600
 GROUP BY speed;
+
+23. Найдите производителей, которые производили бы как ПК со скоростью не менее 750 МГц, так и ПК-блокноты со скоростью не менее 750 МГц. Вывести: Maker.
+
+SELECT maker
+FROM Product
+INNER JOIN PC ON Product.model = PC.model
+WHERE speed >= 750
+INTERSECT
+SELECT maker
+FROM Product
+INNER JOIN Laptop ON Product.model = Laptop.model
+WHERE speed >= 750;
+
 
 
 
