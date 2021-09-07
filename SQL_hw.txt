@@ -109,7 +109,12 @@ FROM PC
 GROUP BY hd
 HAVING COUNT(*) >= 2;
 
-16.
+16. Найдите пары моделей PC, имеющих одинаковые скорость и RAM. В результате каждая пара указывается только один раз, т.е. (i,j), но не (j,i), 
+Порядок вывода: модель с большим номером, модель с меньшим номером, скорость и RAM.
+
+SELECT DISTINCT PC1.model, PC2.model, PC1.speed, PC1.ram
+FROM PC AS PC1, PC AS PC2
+WHERE PC1.model > PC2.model AND PC1.speed = PC2.speed AND PC1.ram = PC2.ram;
 
 17. Найдите модели ПК-блокнотов, скорость которых меньше скорости каждого из ПК. Вывести: type, model, speed.
 
@@ -123,7 +128,10 @@ WHERE Laptop.speed < ALL (SELECT speed FROM PC);
 SELECT Product.maker, Printer.price
 FROM Product
 INNER JOIN Printer ON Product.model = Printer.model
-WHERE price = (SELECT MIN(price) FROM Printer WHERE color = 'y') AND color = 'y'
+WHERE price = (SELECT MIN(price) 
+               FROM Printer 
+               WHERE color = 'y') 
+AND color = 'y'
 GROUP BY maker, price;
 
 19. Для каждого производителя, имеющего модели в таблице Laptop, найдите средний размер экрана выпускаемых им ПК-блокнотов. Вывести: maker, средний размер экрана.
@@ -166,20 +174,3 @@ SELECT maker
 FROM Product
 INNER JOIN Laptop ON Product.model = Laptop.model
 WHERE speed >= 750;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
